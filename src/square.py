@@ -1,13 +1,13 @@
 class Square():
     """
-    The class Square represents a single square in a robot world.
-    A square can contain either a wall or a robot or it can be empty.
+    The class Square represents a single square.
+    A square can contain either an obstacle. a player or it can be empty.
     """
 
     def __init__(self, is_tree=False, is_water=False, is_lava=False):
 
-        self.play_char = None     # most-recent holder (None if no playable character in square)
-        self.is_tree = is_tree  # flag (one-way currently, since walls can not be removed)
+        self.play_char = None
+        self.is_tree = is_tree
         self.is_water = is_water
         self.is_lava = is_lava
 
@@ -17,15 +17,6 @@ class Square():
         Returns the playable character in the square and None if player not in square
         """
         return self.play_char
-
-    def set_play_char(self, play_char):
-        if self.is_empty():
-            self.play_char = play_char
-            return True
-        else:
-            return False
-
-
 
     def is_tree_square(self):
         """
@@ -56,10 +47,10 @@ class Square():
 
     def set_play_char(self, play_char):
         """
-        Marks the square as containing a robot, if possible.
+        Marks the square as containing a player, if possible.
         If the square was not empty, the method fails to do anything.
 
-        Parameter robot is the robot to be placed in this square: Robot
+        Parameter robot is the robot to be placed in this square: Player
 
         Returns a boolean value indicating if the operation succeeded: boolean
         """

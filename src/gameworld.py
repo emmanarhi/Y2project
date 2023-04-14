@@ -49,6 +49,6 @@ class GameWorld():
 
     def get_play_chars(self):
         """
-        Returns an array containing all the robots currently located in this world: list
+        Returns an array containing all the characters currently located in this world: list
         """
         return self.play_chars[:]

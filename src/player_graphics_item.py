@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
-from player import Player
+from PyQt6.QtCore import Qt
 from direction import Direction
 
 
@@ -9,6 +9,8 @@ class PlayerGraphicsItem(QtWidgets.QGraphicsPolygonItem):
         super(PlayerGraphicsItem, self).__init__()
 
         self.play_char = play_char
+        self.moving = False
+
         self.square_size = square_size
         brush = QtGui.QBrush(1) # 1 for even fill
         self.setBrush(brush)
@@ -59,7 +61,21 @@ class PlayerGraphicsItem(QtWidgets.QGraphicsPolygonItem):
             self.setRotation(180)
 
     def updateColor(self):
-        self.setBrush((QtGui.QColor(200, 255, 200)))
+        if self.moving:
+            self.setBrush((QtGui.QColor(255, 200, 200)))
+        else:
+            self.setBrush((QtGui.QColor(200, 255, 200)))
 
-    def mousePressEvent(self, *args, **kwargs):
-        self.play_char.move_forward()
+    def mousePressEvent(self, event):
+        self.moving = not self.moving
+        print(self.moving)
+        self.updateColor()
+
+    def is_moving(self):
+        print(self.moving)
+        return self.moving
+
+
+
+
+

@@ -1,13 +1,10 @@
 import sys
-from PyQt6.QtWidgets import QApplication
 
-from gui import GUI
-
-from direction import Direction
-from gameworld import *
-from coordinates import *
+from src.gameworld import *
+from src.coordinates import *
 from player import *
-
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
+from gui import *
 
 def main():
     test_world = GameWorld(15, 9)
@@ -19,21 +16,13 @@ def main():
     test_world.add_lava(lava_coordinates)
 
     player = Player("emma")
-    player_location = Coordinates(2,1)
+    player_location = Coordinates(2, 1)
     test_world.add_play_char(player, player_location, Direction.EAST)
 
-
-
-    # Every Qt application must have one instance of QApplication.
-    global app # Use global to prevent crashing on exit
+    global app  # Use global to prevent crashing on exit
     app = QApplication(sys.argv)
     gui = GUI(test_world, 50)
-
-    # Start the Qt event loop. (i.e. make it possible to interact with the gui)
     sys.exit(app.exec())
-
-    # Any code below this point will only be executed after the gui is closed.
-
 
 if __name__ == "__main__":
     main()
