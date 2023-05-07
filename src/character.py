@@ -1,17 +1,17 @@
 from src.direction import Direction
 
-class Player():
+class Character():
 
-    def __init__(self, name):
-        self.set_name(name)
+    def __init__(self, name, is_enemy):
+        self.name = name
         self.world = None    # fixed value
         self.location = None   # most-recent holder
         self.dead = False   # are they dead
+        self.is_enemy = is_enemy # onko vihollisjoukko
         self.facing = None
-        self.hp = 10
-
-    def set_name(self, name):
-        self.name = "Mr. Carson"
+        self.damage = None
+        self.hp = 8
+        self.max_hp = 10
 
     def get_world(self):
         return self.world
@@ -25,17 +25,16 @@ class Player():
     def get_facing(self):
         return self.facing
 
-    def kill(self):
-        self.dead = True
-
     def is_dead(self):
+        if self.hp == 0:
+            self.dead = True
         return self.dead
 
     def is_stuck(self):
         world = self.get_world()
         if world is None:
             return True
-
+        # Tätä pitää muistaa muokata, että se ottaa huomioon muutkin kun puut eli hahmot jne.
         for value in Direction.get_values():
             if not world.get_square(self.get_location().get_neighbor(value)).is_tree_square():
                 return False
@@ -73,3 +72,12 @@ class Player():
 
     def move_forward(self):
         return self.move(self.get_facing())
+
+    #Hyökkäys, johon tarvitaan target ja attack type
+
+    def attack(self, victim):
+        victim.hp = victim.hp - 1
+
+    def heal(self):
+        if self.hp < self.max_hp:
+            self.hp += 1

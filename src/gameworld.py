@@ -9,6 +9,7 @@ class GameWorld():
             for y in range(self.get_height()):    # stepper
                 self.squares[x][y] = Square()    # fixed value
         self.play_chars = []                        # container
+        self.enemies = []
         self.turn = 0
 
     def get_width(self):
@@ -22,6 +23,14 @@ class GameWorld():
         if play_char.set_world(self, location, facing):
             self.play_chars.append(play_char)
             self.get_square(location).set_play_char(play_char)
+            return True
+        else:
+            return False
+
+    def add_enemy(self, enemy, location, facing):
+        if enemy.set_world(self, location, facing):
+            self.enemies.append(enemy)
+            self.get_square(location).set_play_char(enemy)
             return True
         else:
             return False
@@ -52,3 +61,6 @@ class GameWorld():
         Returns an array containing all the characters currently located in this world: list
         """
         return self.play_chars[:]
+
+    def get_enemies(self):
+        return self.enemies[:]

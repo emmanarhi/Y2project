@@ -3,20 +3,21 @@ from PyQt6.QtCore import Qt
 from direction import Direction
 
 
-class PlayerGraphicsItem(QtWidgets.QGraphicsPolygonItem):
+class CharacterGraphicsItem(QtWidgets.QGraphicsPolygonItem):
 
-    def __init__(self, play_char, square_size):
-        super(PlayerGraphicsItem, self).__init__()
+    def __init__(self, char, square_size):
+        super(CharacterGraphicsItem, self).__init__()
 
-        self.play_char = play_char
+        self.char = char
         self.moving = False
-
         self.square_size = square_size
-        brush = QtGui.QBrush(1) # 1 for even fill
+        brush = QtGui.QBrush(1)  # 1 for even fill
         self.setBrush(brush)
         self.constructTriangleVertices()
         self.updateAll()
 
+        self.text_item = QtWidgets.QGraphicsTextItem(str(self.char.hp), parent=self)
+        self.text_item.setPos(self.boundingRect().center())
 
     def constructTriangleVertices(self):
         # Create a new QPolygon object
@@ -36,21 +37,28 @@ class PlayerGraphicsItem(QtWidgets.QGraphicsPolygonItem):
         self.setTransformOriginPoint(self.square_size/2, self.square_size/2)
 
     def updateAll(self):
-        self.updatePosition()
-        self.updateRotation()
-        self.updateColor()
+        if not self.char.is_dead():
+            self.updatePosition()
+            self.updateRotation()
+            self.updateColor()
+        else:
+            self.hide()
+
+    def updateColor(self):
+        pass
 
     def updatePosition(self):
-        location_x = self.play_char.get_location().get_x()
-        location_y = self.play_char.get_location().get_y()
+        location_x = self.char.get_location().get_x()
+        location_y = self.char.get_location().get_y()
         if location_x == 0 and location_y == 0:
             self.setPos(0, 0)
         else:
             self.setX(location_x * self.square_size)
             self.setY(location_y * self.square_size)
 
+
     def updateRotation(self):
-        facing = self.play_char.get_facing()
+        facing = self.char.get_facing()
         if facing == (1, 0):
             self.setRotation(90)
         elif facing == (0, -1):
@@ -60,22 +68,31 @@ class PlayerGraphicsItem(QtWidgets.QGraphicsPolygonItem):
         else:
             self.setRotation(180)
 
+    def is_moving(self):
+        return self.moving
+
+
+class PlayerGraphicsItem(CharacterGraphicsItem):
+    def __init__(self, char, square_size):
+        super(PlayerGraphicsItem, self).__init__(char, square_size)
+        self.text_item = QtWidgets.QGraphicsTextItem(str(self.char.hp), parent=self)
+        self.text_item.setPos(self.boundingRect().center())
+
     def updateColor(self):
         if self.moving:
             self.setBrush((QtGui.QColor(255, 200, 200)))
         else:
             self.setBrush((QtGui.QColor(200, 255, 200)))
 
-    def mousePressEvent(self, event):
-        self.moving = not self.moving
-        print(self.moving)
-        self.updateColor()
 
-    def is_moving(self):
-        print(self.moving)
-        return self.moving
+class EnemyGraphicsItem(CharacterGraphicsItem):
+    def __init__(self, char, square_size):
+        super(EnemyGraphicsItem, self).__init__(char, square_size)
+        self.text_item = QtWidgets.QGraphicsTextItem(str(self.char.hp), parent=self)
+        self.text_item.setPos(self.boundingRect().center())
 
-
-
-
-
+    def updateColor(self):
+        if self.moving:
+            self.setBrush((QtGui.QColor(255, 100, 100)))
+        else:
+            self.setBrush((QtGui.QColor(100, 255, 100)))
