@@ -1,8 +1,12 @@
 World1
-#Trees:11,22
-#Lava:71
-#Water:83,66
-#Player:55,77
-#Enemy:23,99
+size:15,9
+Trees:11,22
+Lava:71
+Water:83,66
 
 World2
+size:15,9
+Trees:22,55,77
+Lava:66,89,10,12
+Water:78,99,15
+Water:78,99,15
