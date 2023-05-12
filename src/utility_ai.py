@@ -101,7 +101,7 @@ class UtilityAI:
         elif self.character.hp < self.character.max_hp - 2:
             self.heal = 0.2
 
-        return self.heal * 1.5
+        return self.heal * 1
 
 
     def highest_utility(self):
@@ -110,7 +110,7 @@ class UtilityAI:
         self.basic = self.basic_attack_utility()
         self.charge = self.charged_attack_utility()
 
-        max_utility = max(self.move, self.heal, self.charge, self.basic)
+        max_utility = max(self.move, self.basic, self.heal, self.charge)
 
         self.max_utility = max_utility
         return self.max_utility

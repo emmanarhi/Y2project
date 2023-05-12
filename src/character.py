@@ -15,7 +15,7 @@ class Character():
         self.facing = None
         self.damage = None
 
-        self.hp = 8
+        self.hp = 10
         self.energy = 10 # tää laskee vedessä ja erikoishyökkäyksen jälkeen
         self.max_hp = 10
 
