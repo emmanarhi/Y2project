@@ -1,17 +1,26 @@
 from src.direction import Direction
+from coordinates import Coordinates
+from utility_ai import UtilityAI
+
 
 class Character():
 
     def __init__(self, name, is_enemy):
-        self.name = name
+        self.name = name # Määrittää hahmon tehtävän (normal, shoot, tank)
         self.world = None    # fixed value
         self.location = None   # most-recent holder
         self.dead = False   # are they dead
         self.is_enemy = is_enemy # onko vihollisjoukko
+        self.attacks = {}
         self.facing = None
         self.damage = None
+
         self.hp = 8
+        self.energy = 10 # tää laskee vedessä ja erikoishyökkäyksen jälkeen
         self.max_hp = 10
+
+        self.ai = None
+
 
     def get_world(self):
         return self.world
@@ -26,7 +35,7 @@ class Character():
         return self.facing
 
     def is_dead(self):
-        if self.hp == 0:
+        if self.hp <= 0:
             self.dead = True
         return self.dead
 
@@ -34,7 +43,6 @@ class Character():
         world = self.get_world()
         if world is None:
             return True
-        # Tätä pitää muistaa muokata, että se ottaa huomioon muutkin kun puut eli hahmot jne.
         for value in Direction.get_values():
             if not world.get_square(self.get_location().get_neighbor(value)).is_tree_square():
                 return False
@@ -66,6 +74,13 @@ class Character():
             current_square.remove_play_char()
             self.location = target
             target_square.set_play_char(self)
+
+            if target_square.is_water_square():
+                self.energy -= 3
+
+            if target_square.is_lava_square():
+                self.hp -= 2
+            self.raise_energy()
             return True
         else:
             return False
@@ -73,11 +88,36 @@ class Character():
     def move_forward(self):
         return self.move(self.get_facing())
 
-    #Hyökkäys, johon tarvitaan target ja attack type
+    def basic_attack(self, victim):
+        for key, value in self.attacks.items():
+            if "charge" not in key:
+                if self.get_location().get_distance(victim.get_location()) <= self.attacks[key][1]:
+                    victim.hp = victim.hp - self.attacks[key][0]
+                    self.raise_energy()
+                    return True
+                else:
+                    return False
 
-    def attack(self, victim):
-        victim.hp = victim.hp - 1
+    def charged_attack(self, victim):
+        for key, value in self.attacks.items():
+            if "charge" in key:
+                if self.get_location().get_distance(victim.get_location()) <= self.attacks[key][1]:
+                    if self.energy > 5:
+                        self.energy -= 5
+                        victim.hp = victim.hp - self.attacks[key][0]
+                        return True
+                else:
+                    return False
+
+    def raise_energy(self):
+        if self.energy < 10:
+            self.energy += 1
 
     def heal(self):
         if self.hp < self.max_hp:
             self.hp += 1
+            self.raise_energy()
+
+    def add_ai(self):
+        if self.is_enemy:
+            self.ai = UtilityAI(self)

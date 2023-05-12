@@ -42,7 +42,7 @@ class Square():
         Returns a boolean value stating whether the square is empty
         """
 
-        return not (self.is_tree_square() or self.is_lava_square() or self.is_water_square()) and self.play_char is None
+        return not self.is_tree_square() and self.play_char is None
 
 
     def set_play_char(self, play_char):

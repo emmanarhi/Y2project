@@ -68,28 +68,3 @@ class Coordinates():
 
         return max(delta_y, delta_x)
 
-    def get_direction(self, coordinates):
-        delta_x = self.get_x() - coordinates.get_x()
-        delta_y = self.get_y() - coordinates.get_y()
-
-        if delta_x < 0:
-            if delta_y == 0:
-                direction = Direction.NORTH
-            elif delta_y < 0:
-                direction = Direction.NW
-            elif delta_y > 0:
-                direction = Direction.NE
-        elif delta_x > 0:
-            if delta_y == 0:
-                direction = Direction.SOUTH
-            elif delta_y < 0:
-                direction = Direction.SW
-            elif delta_y > 0:
-                direction = Direction.SE
-        elif delta_x == 0:
-            if delta_y < 0:
-                direction = Direction.WEST
-            elif delta_y > 0:
-                direction = Direction.EAST
-
-        return direction

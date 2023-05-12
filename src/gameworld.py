@@ -1,4 +1,5 @@
 from square import Square
+import random
 
 class GameWorld():
 
@@ -10,7 +11,8 @@ class GameWorld():
                 self.squares[x][y] = Square()    # fixed value
         self.play_chars = []                        # container
         self.enemies = []
-        self.turn = 0
+        self.player_turn = True
+        self.game_won = False
 
     def get_width(self):
         return len(self.squares)
@@ -34,6 +36,10 @@ class GameWorld():
             return True
         else:
             return False
+
+    def add_ai(self):
+        for enemy in self.enemies:
+            enemy.add_ai()
 
     def add_tree(self, location):
         return self.get_square(location).set_tree()
@@ -64,3 +70,43 @@ class GameWorld():
 
     def get_enemies(self):
         return self.enemies[:]
+
+    def choose_enemy(self):
+        highest_utility = 0.25
+        utilities = []
+        chosen_enemy = None
+        for enemy in self.enemies:
+            if not enemy.is_dead():
+                utility = enemy.ai.highest_utility()
+                utilities.append(utility)
+                if utility > highest_utility:
+                    highest_utility = utility
+                    chosen_enemy = enemy
+
+        if max(utilities) == 0.25:
+            index = random.randint(1, len(self.enemies))
+            print(index - 1)
+            chosen_enemy = self.enemies[index - 1]
+        print(str(chosen_enemy.name), str(highest_utility))
+        return chosen_enemy
+
+    def enemy_turn(self):
+        if not self.player_turn:
+            enemy = self.choose_enemy()
+            enemy.ai.act_on_highest_utility()
+            self.player_turn = True
+
+    def game_over(self):
+        enemies_alive = 0
+        chars_alive = 0
+        for enemy in self.get_enemies():
+            if not enemy.is_dead():
+                enemies_alive += 1
+        for char in self.get_play_chars():
+            if not char.is_dead():
+                chars_alive += 1
+        if chars_alive == 0:
+            return -1
+        if enemies_alive == 0:
+            return 1
+        return 0
