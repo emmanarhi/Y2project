@@ -1,0 +1,8 @@
+Player characters:
+normal;False;1,3;8;10
+shooter;False;1,4;8;10
+tank;False;1,5;8;10
+Enemy characters:
+normal;False;13,3;8;10
+shooter;False;13,4;8;10
+tank;False;13,5;8;10
