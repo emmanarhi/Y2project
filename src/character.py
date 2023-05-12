@@ -7,8 +7,8 @@ class Character():
 
     def __init__(self, name, is_enemy):
         self.name = name # Määrittää hahmon tehtävän (normal, shoot, tank)
-        self.world = None    # fixed value
-        self.location = None   # most-recent holder
+        self.world = None
+        self.location = None
         self.dead = False   # are they dead
         self.is_enemy = is_enemy # onko vihollisjoukko
         self.attacks = {}

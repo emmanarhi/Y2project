@@ -11,7 +11,7 @@ class CharacterGraphicsItem(QtWidgets.QGraphicsPolygonItem):
         self.char = char
         self.moving = False
         self.square_size = square_size
-        brush = QtGui.QBrush(1)  # 1 for even fill
+        brush = QtGui.QBrush(1)
         self.setBrush(brush)
         if self.char.name == "normal":
             self.constructTriangleVertices()
@@ -118,7 +118,4 @@ class EnemyGraphicsItem(CharacterGraphicsItem):
         self.text_item = None
 
     def updateColor(self):
-        if self.moving:
-            self.setBrush((QtGui.QColor(255, 100, 100)))
-        else:
-            self.setBrush((QtGui.QColor(100, 255, 100)))
+        self.setBrush((QtGui.QColor(255, 100, 100)))

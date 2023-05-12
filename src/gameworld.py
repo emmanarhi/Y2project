@@ -1,6 +1,7 @@
 from square import Square
 import random
 
+
 class GameWorld():
 
     def __init__ (self, width, height):
@@ -36,10 +37,6 @@ class GameWorld():
             return True
         else:
             return False
-
-    def add_ai(self):
-        for enemy in self.enemies:
-            enemy.add_ai()
 
     def add_tree(self, location):
         return self.get_square(location).set_tree()
@@ -85,9 +82,7 @@ class GameWorld():
 
         if max(utilities) == 0.25:
             index = random.randint(1, len(self.enemies))
-            print(index - 1)
             chosen_enemy = self.enemies[index - 1]
-        print(str(chosen_enemy.name), str(highest_utility))
         return chosen_enemy
 
     def enemy_turn(self):

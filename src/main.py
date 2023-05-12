@@ -83,7 +83,6 @@ def load_attacks(filename):
         print("Couldn't open file")
 
 
-# Nyt valitettavasti laitan vaa pelaajat hard coded in koska aina sama layout
 def load_map(filename, world_num):
     coordinates = read_map_file(filename, world_num)
 

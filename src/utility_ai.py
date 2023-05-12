@@ -25,6 +25,16 @@ class UtilityAI:
         closest_player = players[index]
         return min_distance, closest_player
 
+    # Funktio määrittää, onko tähän suuntaan kannattavaa liikkua
+    def direction_worth_it(self, loc):
+        if self.character.world.get_square(loc).is_lava_square():
+            if self.character.hp > 5:
+                return True
+            else:
+                return False
+        elif self.character.world.get_square(loc).is_empty():
+            return True
+
     def direction_nearest(self):
         loc_north = self.character.get_location().get_neighbor(Direction.NORTH)
         loc_east = self.character.get_location().get_neighbor(Direction.EAST)
@@ -35,19 +45,19 @@ class UtilityAI:
         distances = []
 
         dist_north = player_loc.get_distance(loc_north)
-        if self.character.world.get_square(loc_north).is_empty():
+        if self.direction_worth_it(loc_north):
             distances.append(dist_north)
 
         dist_east = player_loc.get_distance(loc_east)
-        if self.character.world.get_square(loc_east).is_empty():
+        if self.direction_worth_it(loc_east):
             distances.append(dist_east)
 
         dist_south = player_loc.get_distance(loc_south)
-        if self.character.world.get_square(loc_south).is_empty():
+        if self.direction_worth_it(loc_south):
             distances.append(dist_south)
 
         dist_west = player_loc.get_distance(loc_west)
-        if self.character.world.get_square(loc_west).is_empty():
+        if self.direction_worth_it(loc_west):
             distances.append(dist_west)
 
         distances.sort()
@@ -89,7 +99,7 @@ class UtilityAI:
         if self.character.hp < self.character.max_hp - 5:
             self.heal = 1
         elif self.character.hp < self.character.max_hp - 2:
-            self.heal = 0.5
+            self.heal = 0.2
 
         return self.heal * 1.5
 
@@ -101,10 +111,8 @@ class UtilityAI:
         self.charge = self.charged_attack_utility()
 
         max_utility = max(self.move, self.heal, self.charge, self.basic)
-        print(str(self.charge), str(self.basic), str(self.heal), str(self.move))
 
         self.max_utility = max_utility
-        print(max_utility)
         return self.max_utility
 
     def act_on_highest_utility(self):
