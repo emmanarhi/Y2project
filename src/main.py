@@ -1,7 +1,7 @@
 import sys
 
-from src.gameworld import *
-from src.coordinates import *
+from gameworld import *
+from coordinates import *
 from character import *
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
 from gui import *
@@ -98,7 +98,7 @@ def load_map(filename, world_num):
         world = GameWorld(coordinates[0], coordinates[1])
 
     # asetetaan eri hyökkäystyypit hahmoille, niiden nimessä aina hahmotyypin nimi
-    attacks = load_attacks("/data/attacks.txt")
+    attacks = load_attacks("../data/attacks.txt")
     normal_attacks = attacks.copy()
     shooter_attacks = attacks.copy()
     tank_attacks = attacks.copy()

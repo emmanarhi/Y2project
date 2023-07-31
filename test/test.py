@@ -1,9 +1,9 @@
 import unittest
-from character import Character
-from gameworld import GameWorld
-from coordinates import Coordinates
-from direction import Direction
-from square import Square
+from src.character import Character
+from src.gameworld import GameWorld
+from src.coordinates import Coordinates
+from src.direction import Direction
+from src.square import Square
 
 
 class TestGameWorld(unittest.TestCase):

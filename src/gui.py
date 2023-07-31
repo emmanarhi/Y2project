@@ -36,7 +36,7 @@ class MainMenu(QtWidgets.QWidget):
         self.setWindowTitle('Main Menu')
 
     def play_game(self, world_num):
-        self.chosen_world = load_map("/data/worlds.txt", world_num)
+        self.chosen_world = load_map("../data/worlds.txt", world_num)
         if world_num != 3:
             self.gui.switch_to_game()
         else:
@@ -202,7 +202,7 @@ class GUI(QtWidgets.QMainWindow):
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key.Key_Q:
-            save_game(self.world, "/data/saved_game.txt")
+            save_game(self.world, "../data/saved_game.txt")
             sys.exit()
 
     def selected_player(self):
