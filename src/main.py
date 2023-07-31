@@ -98,7 +98,7 @@ def load_map(filename, world_num):
         world = GameWorld(coordinates[0], coordinates[1])
 
     # asetetaan eri hyökkäystyypit hahmoille, niiden nimessä aina hahmotyypin nimi
-    attacks = load_attacks("C:/Users/enarh/PycharmProjects/Y2/projectgit/doc/attacks.txt")
+    attacks = load_attacks("/data/attacks.txt")
     normal_attacks = attacks.copy()
     shooter_attacks = attacks.copy()
     tank_attacks = attacks.copy()

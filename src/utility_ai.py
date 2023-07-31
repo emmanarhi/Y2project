@@ -98,8 +98,6 @@ class UtilityAI:
         self.heal = 0
         if self.character.hp < self.character.max_hp - 5:
             self.heal = 1
-        elif self.character.hp < self.character.max_hp - 2:
-            self.heal = 0.2
 
         return self.heal * 1
 
