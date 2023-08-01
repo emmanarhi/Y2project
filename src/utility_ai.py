@@ -2,6 +2,9 @@ from direction import Direction
 
 
 class UtilityAI:
+    """
+    Determines the best action for a character based on the utilities of different actions
+    """
     def __init__(self, character):
         self.character = character
         self.attack_range = self.character.attacks[str(self.character.name)][1]
@@ -12,6 +15,9 @@ class UtilityAI:
         self.heal = 0
 
     def smallest_distance(self):
+        """
+        Returns the smallest distance to a playable character and the Character object in that location
+        """
         distances = []
         players = []
         for player in self.character.world.get_play_chars():
@@ -25,8 +31,11 @@ class UtilityAI:
         closest_player = players[index]
         return min_distance, closest_player
 
-    # Funktio määrittää, onko tähän suuntaan kannattavaa liikkua
     def direction_worth_it(self, loc):
+        """
+        Returns True if the square in location loc is a viable option and False if the character shouldn't
+        move to the square.
+        """
         if self.character.world.get_square(loc).is_lava_square():
             if self.character.hp > 5:
                 return True
@@ -35,39 +44,59 @@ class UtilityAI:
         elif self.character.world.get_square(loc).is_empty():
             return True
 
+    def distances(self, locations, player_loc):
+        """
+        Creates lists that store the absolute distance to the player and the sum of
+        changes in the x and y directions in relation to the player.
+        """
+        distances = []
+        dxdy = []
+        for loc in locations:
+            if self.direction_worth_it(loc):
+                dx = player_loc.delta_x(loc)
+                dy = player_loc.delta_y(loc)
+                dist = player_loc.get_distance(loc)
+                distances.append(dist)
+                dxdy.append(dx + dy)
+            else:
+                distances.append(100)
+                dxdy.append(100)
+        return distances, dxdy
+
     def direction_nearest(self):
+        """
+        Returns the direction in which the character should move
+        """
         loc_north = self.character.get_location().get_neighbor(Direction.NORTH)
         loc_east = self.character.get_location().get_neighbor(Direction.EAST)
         loc_south = self.character.get_location().get_neighbor(Direction.SOUTH)
         loc_west = self.character.get_location().get_neighbor(Direction.WEST)
         player_loc = self.smallest_distance()[1].get_location()
+        locations = [loc_north, loc_east, loc_south, loc_west]
 
-        distances = []
+        distances, dxdy = self.distances(locations, player_loc)
 
-        dist_north = player_loc.get_distance(loc_north)
-        if self.direction_worth_it(loc_north):
-            distances.append(dist_north)
+        dist_north = distances[0]
+        dist_east = distances[1]
+        dist_south = distances[2]
+        dist_west = distances[3]
 
-        dist_east = player_loc.get_distance(loc_east)
-        if self.direction_worth_it(loc_east):
-            distances.append(dist_east)
-
-        dist_south = player_loc.get_distance(loc_south)
-        if self.direction_worth_it(loc_south):
-            distances.append(dist_south)
-
-        dist_west = player_loc.get_distance(loc_west)
-        if self.direction_worth_it(loc_west):
-            distances.append(dist_west)
+        dxdy_north = dxdy[0]
+        dxdy_east = dxdy[1]
+        dxdy_south = dxdy[2]
+        dxdy_west = dxdy[3]
 
         distances.sort()
-        min_dist = distances[0]
+        dxdy.sort()
 
-        if min_dist == dist_north:
+        min_dist = distances[0]
+        min_dxdy = dxdy[0]
+
+        if min_dist == dist_north and min_dxdy == dxdy_north:
             return Direction.NORTH
-        elif min_dist == dist_east:
+        elif min_dist == dist_east and min_dxdy == dxdy_east:
             return Direction.EAST
-        elif min_dist == dist_south:
+        elif min_dist == dist_south and min_dxdy == dxdy_south:
             return Direction.SOUTH
         else:
             return Direction.WEST

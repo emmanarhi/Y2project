@@ -63,8 +63,14 @@ class Coordinates():
                            self.get_y() + Direction.get_y_step(new_direction) * distance)
 
     def get_distance(self, coordinates):
-        delta_x = abs(self.get_x() - coordinates.get_x())
-        delta_y = abs(self.get_y() - coordinates.get_y())
+        delta_x = self.delta_x(coordinates)
+        delta_y = self.delta_y(coordinates)
 
         return max(delta_y, delta_x)
+
+    def delta_x(self, coordinates):
+        return abs(self.get_x() - coordinates.get_x())
+
+    def delta_y(self, coordinates):
+        return abs(self.get_y() - coordinates.get_y())
 
