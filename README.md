@@ -2,5 +2,6 @@
 This program is a simple turn-based strategy game with three playable characters and three enemies controlled by a simple artificial intelligence. The game has two maps configured from a text file but also a course editor where the user can make their own map. There are three kinds of obstacles; trees, water and lava.
 NOTE: The only library needed outside of the python standard library is PyQt6
 # How to use it?
-Run the file _main.py_ under folder _src_. You can quit the program at any time by pressing Q. At first the main menu opens where you can choose to play one of the ready maps or make one yourself. By clicking the squares in the editor you can change the square type and the game starts by pressing the _S_ key.
-In the game you can choose a character with the left mouse button. You can choose to move, attack or heal at your turn. You move with arrow keys, attack by clicking the enemy you wish to attack (and choosing the attack type) and heal with the right mouse button. (More information in doc)
+Run the 'main.py' file located in the 'src' folder. Quit the program at any time by pressing 'Q'. Upon starting, the main menu will appear, offering options to play pre-made maps or create a custom one using the editor. Use the editor to modify square types, and start the game by pressing 'S'.
+
+During the game, select a character using the left mouse button. On your turn, choose to move, attack, or heal. Move your character with the arrow keys, attack enemies by clicking on them (and selecting the attack type), and heal by using the right mouse button. More detailed information is available in the 'doc' folder.
